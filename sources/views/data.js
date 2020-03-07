@@ -6,27 +6,27 @@ import CustomersData from "views/customersData";
 
 export default class Data extends JetView {
 	config() {
-		const tabbar = {
-			view: "tabbar",
-			multiview: true,
-			value: "countries",
-			options: [
-				{ id: "countries", value: "Countries" },
-				{ id: "statuses", value: "Statuses" },
-			]
-		};
-
-		const ui = {
+		return {
 			rows: [
-				tabbar,
+				{
+					view: "tabbar",
+					localId: "tabbar",
+					options: [
+						{ value: "Countries" },
+						{ value: "Statuses" },
+					]
+				},
 				{
 					cells: [
-						{ id: "countries", rows: [new CustomersData(this.app, "", countries)] },
-						{ id: "statuses", rows: [new CustomersData(this.app, "", statuses)] }
+						{ localId: "Countries", rows: [new CustomersData(this.app, "", countries)] },
+						{ localId: "Statuses", rows: [new CustomersData(this.app, "", statuses)] }
 					]
 				}
 			]
-		};
-		return ui;
+		}
+
+	}
+	init(){
+		this.$$("tabbar").attachEvent("onChange", value => this.$$(value).show());
 	}
 }

@@ -1,6 +1,8 @@
 import { JetView } from "webix-jet";
 import { contacts } from "models/contacts";
 
+import Form from "views/form";
+
 export default class Contacts extends JetView {
 	config() {
 		const list = {
@@ -25,26 +27,10 @@ export default class Contacts extends JetView {
 			]
 		};
 
-		const form = {
-			paddingX: 5,
-			view: "form",
-			localId: "form",
-			elements: [
-				{
-					rows: [
-						{ view: "text", label: "User Name", name: "title" },
-						{ view: "text", label: "Email", name: "email" }
-
-					]
-				},
-				{}
-			]
-		};
-
 		const ui = {
 			cols: [
 				list,
-				form
+				Form
 			]
 		};
 
