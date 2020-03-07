@@ -1,0 +1,12 @@
+.app_header.webix_header{
+	text-align:center;
+} 
+
+.app_layout.webix_layout_clean{
+	background: #EBEDF0;
+} 
+
+.app_menu .webix_icon{
+	font-size:20px;
+	vertical-align:middle;
+}
