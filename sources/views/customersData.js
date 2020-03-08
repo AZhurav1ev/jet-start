@@ -32,22 +32,21 @@ export default class CustomersData extends JetView {
 		};
 	}
 
-	init(view) {
-		view.queryView("datatable").parse(this._componentData);
+	init() {
+		this.table = this.$$("table");
+		this.table.parse(this._componentData);
 	}
 
 	addItem() {
 		const item = { Name: "New Item" };
-		const table = this.$$("table");
-		table.add(item);
+		this.table.add(item);
 	}
 
 	deleteItem() {
-		const table = this.$$("table");
-		const item = table.getSelectedId();
+		const item = this.table.getSelectedId();
 		webix.confirm("Do you really want to delete this item?")
 			.then(() => {
-				table.remove(item);
+				this.table.remove(item);
 			});
 	}
 }
