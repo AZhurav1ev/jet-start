@@ -44,9 +44,11 @@ export default class CustomersData extends JetView {
 
 	deleteItem() {
 		const item = this.table.getSelectedId();
-		webix.confirm("Do you really want to delete this item?")
-			.then(() => {
-				this.table.remove(item);
-			});
+		if (item) {
+			webix.confirm("Do you really want to delete this item?")
+				.then(() => {
+					this.table.remove(item);
+				});
+		}
 	}
 }
