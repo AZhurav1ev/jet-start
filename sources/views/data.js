@@ -6,24 +6,25 @@ import CustomersData from "views/customersData";
 
 export default class Data extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [
 				{
 					view: "tabbar",
 					localId: "tabbar",
 					options: [
-						{ value: "Countries" },
-						{ value: "Statuses" },
+						{ value: _("Countries") },
+						{ value: _("Statuses") },
 					]
 				},
 				{
 					cells: [
-						{ localId: "Countries", rows: [new CustomersData(this.app, "", countries)] },
-						{ localId: "Statuses", rows: [new CustomersData(this.app, "", statuses)] }
+						{ localId: _("Countries"), rows: [new CustomersData(this.app, "", countries)] },
+						{ localId: _("Statuses"), rows: [new CustomersData(this.app, "", statuses)] }
 					]
 				}
 			]
-		}
+		};
 
 	}
 	init(){
