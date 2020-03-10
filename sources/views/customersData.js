@@ -34,12 +34,12 @@ export default class CustomersData extends JetView {
 
 	init() {
 		this.table = this.$$("table");
-		this.table.parse(this._componentData);
+		this.table.sync(this._componentData);
 	}
 
 	addItem() {
 		const item = { Name: "New Item" };
-		this.table.add(item);
+		this._componentData.add(item, 0);
 	}
 
 	deleteItem() {
@@ -47,7 +47,7 @@ export default class CustomersData extends JetView {
 		if (item) {
 			webix.confirm("Do you really want to delete this item?")
 				.then(() => {
-					this.table.remove(item);
+					this._componentData.remove(item);
 				});
 		}
 	}
