@@ -50,29 +50,53 @@ export default class Contacts extends JetView {
 			]
 		};
 	}
+
 	init(view, url) {
 		this.list = this.$$("contactsList");
 		this.list.sync(contacts);
 		this.list.attachEvent("onItemClick", id => {
 			this.show(`./form?id=${id}`);
 		});
+		contacts.attachEvent("onAfterLoad", () => {
+			if (url.length <= 1 && this.list.getFirstId()) {
+				this.show("./form?id=" + this.list.getFirstId());
+			} else if (url[1].params.id) {
+				this.show("./form?id=" + url[1].params.id);
+			} else {
+				this.show("./form");
+			}
+		});
+	}
 
-		(url.length <= 1 && this.list.getFirstId()) ? (this.show("./form?id=" + this.list.getFirstId())) : (this.show("./form"));
+	ready(view, url) {
+		if (url.length <= 1 && this.list.getFirstId()) {
+			this.show("./form?id=" + this.list.getFirstId());
+		} else {
+			this.show("./form");
+		}
 	}
 
 	urlChange(view, url) {
-		let id = (url.length <= 1) ? url[0].params.id || this.list.getFirstId() :
-			(url[1].params.id && contacts.exists(url[1].params.id)) ? url[1].params.id : false;
+		contacts.waitData.then(() => {
+			let id;
+			if (url.length <= 1) {
+				id = url[0].params.id || this.list.getFirstId();
+			} else if (url[1].params.id && contacts.exists(url[1].params.id)) {
+				id = url[1].params.id;
+			} else {
+				id = false;
+			}
+			id ? this.list.select(id) : this.list.unselectAll();
+		});
 
-		id ? this.list.select(id) : this.list.unselectAll();
 	}
 
 	addItem() {
-		contacts.add({ Name: "Add your name", Email: "Add your email" }, 0);
-		let id = this.list.getFirstId();
-		if (id && contacts.exists(id)) {
-			this.show("./form?id=" + this.list.getFirstId());
-		}
+		contacts.waitSave(() => {
+			contacts.add({ Name: "Add your name", Email: "Add your email" }, 0);
+		}).then(res => {
+			res.id ? this.show("./form?id=" + res.id) : webix.message("Somthing went wrong");
+		});
 	}
 
 	deleteItem(item_id) {

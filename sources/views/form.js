@@ -44,9 +44,9 @@ export default class Form extends JetView {
 	saveItem() {
 		const form = this.getRoot();
 		if (form.validate()) {
-			const item_data = form.getValues();
-			if (item_data && item_data.id) {
-				contacts.updateItem(item_data.id, item_data);
+			const itemData = form.getValues();
+			if (itemData && itemData.id) {
+				contacts.updateItem(itemData.id, itemData);
 				webix.message({
 					text: "Contact is updated",
 					type: "success",
@@ -54,9 +54,8 @@ export default class Form extends JetView {
 
 				});
 			} else {
-				contacts.add(item_data);
 				webix.message({
-					text: "New contact added",
+					text: "Press add button to save new contact",
 					type: "success",
 					expire: 1000
 				});
@@ -66,11 +65,17 @@ export default class Form extends JetView {
 	}
 
 	urlChange(view) {
-		const id = this.getParam("id");
-		if (id && contacts.exists(id)) {
-			const item = contacts.getItem(id);
-			view.clearValidation();
-			view.setValues(item);
-		}
+		webix.promise.all([
+			contacts.waitData,
+			statuses.waitData,
+			countries.waitData
+		]).then(() => {
+			const id = this.getParam("id");
+			if (id && contacts.exists(id)) {
+				const item = contacts.getItem(id);
+				view.clearValidation();
+				view.setValues(item);
+			}
+		});
 	}
 }
