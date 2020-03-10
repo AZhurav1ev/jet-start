@@ -67,7 +67,8 @@ export default class Form extends JetView {
 	urlChange(view) {
 		webix.promise.all([
 			contacts.waitData,
-			statuses.waitData
+			statuses.waitData,
+			countries.waitData
 		]).then(() => {
 			const id = this.getParam("id");
 			if (id && contacts.exists(id)) {
@@ -75,7 +76,6 @@ export default class Form extends JetView {
 				view.clearValidation();
 				view.setValues(item);
 			}
-		})
-
+		});
 	}
 }

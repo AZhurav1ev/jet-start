@@ -58,8 +58,8 @@ export default class Contacts extends JetView {
 		});
 		contacts.attachEvent("onAfterLoad", () => {
 			(url.length <= 1 && this.list.getFirstId()) ? (this.show("./form?id=" + this.list.getFirstId())) : 
-			(url[1].params.id) ? (this.show("./form?id=" + url[1].params.id )):(this.show("./form"));
-		})	
+				(url[1].params.id) ? (this.show("./form?id=" + url[1].params.id )):(this.show("./form"));
+		});	
 	}
 
 	ready(view, url) {
@@ -71,7 +71,7 @@ export default class Contacts extends JetView {
 			let id = (url.length <= 1) ? url[0].params.id || this.list.getFirstId() :
 				(url[1].params.id && contacts.exists(url[1].params.id)) ? url[1].params.id : false;
 			id ? this.list.select(id) : this.list.unselectAll();
-		})
+		});
 	
 	}
 
@@ -79,8 +79,8 @@ export default class Contacts extends JetView {
 		contacts.waitSave(() => {
 			contacts.add({ Name: "Add your name", Email: "Add your email" }, 0);
 		}).then(res => {
-			res.id ? this.show("./form?id=" + res.id) : webix.message("Somthing went wrong")
-		})		
+			res.id ? this.show("./form?id=" + res.id) : webix.message("Somthing went wrong");
+		});
 	}
 
 	deleteItem(item_id) {
